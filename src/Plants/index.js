@@ -1,4 +1,3 @@
-import "./_Plants.scss"
 function Plants(props) {
 
     const plants = props.plants;

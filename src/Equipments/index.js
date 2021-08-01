@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import TimePicker from 'rc-time-picker';
 import 'rc-time-picker/assets/index.css';
 import moment from 'moment';
-import "./_Equipments.scss";
 import InfoModal from "../InfoModal";
 
 function Equipments(props) {
@@ -33,8 +32,8 @@ function Equipments(props) {
     function filterEquipmentSensors(selectedEquipment) {
         console.log({selectedEquipment});
         console.time("V1 Timing");
-        // const result = selectedEquipment.getAllSensorInTimeRangev1(startDate, endDate);
-        // console.log({result});
+        const result = selectedEquipment.getAllSensorInTimeRangev1(startDate, endDate);
+        console.log({result});
         console.timeEnd("V1 Timing");
         console.time("V2 Timing");
         const result2 = selectedEquipment.getAllSensorInTimeRange(startDate, endDate);

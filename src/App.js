@@ -27,6 +27,7 @@ function readFile(event) {
     let data = JSON.parse(reader.result);
     // If `input` is present in data, parse input
     if (data.input !== undefined) {
+      console.log(data.output);
         data = data.input;
     }
     let {plants, equipments, sensors} = createData(data);
