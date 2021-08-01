@@ -232,6 +232,9 @@ class Equipment {
         const startTimeInMinutes = getTimeInMinutes(startTime);
         const endTimeInMinutes = getTimeInMinutes(endTime);
 
+        let startTimeFilteredObjects = new Set();
+
+
         // Get group number of start time and end time
         // Since we are dividing 24 hours into 48 hours; we need to get lower bound start and end time
         const lowerBoundStartTime = parseInt(startTimeInMinutes/30);
@@ -239,10 +242,10 @@ class Equipment {
 
         // TODO: Handle if startTime > EndTime; if startTime < 00:00 && endTime > 23:59
         if (this.sensors.size === 0 && this.sensorTimeMap.size === 0) {
-            return result; 
+            return startTimeFilteredObjects; 
         }
         if (startTimeInMinutes > this.sensorsMaxStartTime || endTimeInMinutes < this.sensorsMinEndTime) {
-            return result;
+            return startTimeFilteredObjects;
         }
     
         // Array of sets of ES with potential matches
@@ -259,7 +262,6 @@ class Equipment {
     
         // Process this.sensorStartTimeMap
         // Set of filtered ES objects in lowerBoundStartTime and lowerBoundEndTime
-        let startTimeFilteredObjects = new Set();
 
         let lowerBoundStartTimeElems = [...(this.sensorStartTimeMap[lowerBoundStartTime] || [])];
         let lowerBoundEndTimeElems = [...(this.sensorStartTimeMap[lowerBoundEndTime] || [])];
