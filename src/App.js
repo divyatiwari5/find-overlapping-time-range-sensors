@@ -2,12 +2,14 @@ import { useState } from 'react';
 import './App.scss';
 import Equipments from './Equipments';
 import Plants from './Plants';
-import {createData} from "./scripts/mainScript.js";
+// import {createData} from "./scripts/mainScript.js";
 import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import Sensors from './Sensors';
 import PlantIcon from "./assets/plant.png";
 import EquipIcon from "./assets/equipment.png";
 import SensorIcon from "./assets/sensor.png";
+
+const createData =  require("./scripts/mainScript.js")
 
 function App() {
 

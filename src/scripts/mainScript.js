@@ -16,15 +16,15 @@ function union (sets) {
 
 // Stores plants and it's associated equipments - PlantMapping
 class Plant {
-    #equipments;
+    equipments;
 
     constructor(name) {
         this.name = name;
-        this.#equipments = new Set();
+        this.equipments = new Set();
     }
 
     addEquipment(equipment) {
-        this.#equipments.add(equipment);
+        this.equipments.add(equipment);
     }
 }
 
@@ -234,7 +234,7 @@ class Sensor {
  * @param {*} data 
  * @returns plants, equipments and sensors
  */
-export function createData(data) {
+function createData(data) {
 
     let plants = {};
     let equipments = {};
@@ -263,4 +263,4 @@ export function createData(data) {
     return {plants, equipments, sensors};
 }
 
-// module.exports = createData
+module.exports = createData
