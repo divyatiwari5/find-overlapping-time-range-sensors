@@ -24,10 +24,10 @@ On the main page, user can upload a json input file in a specific format.
 User can view Total Plants, Equipments, Sensors, Sensors within Equipments. On equipments page, user will get a option
 to select start time and end time to filter the sensors of a particular equipment.
 
-[http://localhost:3000/plants]: This page contains a list of plants and their count
-[http://localhost:3000/equipments]: This page contains a list of equipments, their count, their sensor related info i.e name,
+- [http://localhost:3000/plants]: This page contains a list of plants and their count
+- [http://localhost:3000/equipments]: This page contains a list of equipments, their count, their sensor related info i.e name,
 start time, end time of sensor in a equipment and an option to select time.
-[http://localhost:3000/sensors]: This page contains a list of sensors and it's count.
+- [http://localhost:3000/sensors]: This page contains a list of sensors and it's count.
 
 ### `Sample Data`
 
@@ -54,9 +54,20 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 ### `Generate Large Data`
 
-Go to [src/scripts/dataGenerator.js] file
-Uncomment code from `line no.77` to `line. no 85`.
-From terminal run, `node <path to dataGenerator.js>`
+1. Go to [src/scripts/dataGenerator.js] file
+2. Uncomment code from `line no.77` to `line. no 85`.
+3. From terminal run, `node <path to dataGenerator.js>`
+4. It will generate the huge data with 1 Plant, 1 Equipment, 1 Sensor and 1000000 EquipmentSensor Mappings
+5. You can modify the values in generateRandomData()
+
+### `Running app from terminal`
+
+1. Open node in terminal by typing `node`
+2. const fs = require('fs');
+3. const path = require('path');
+4. let rawdata = fs.readFileSync(path.resolve('scripts/data/', 'baseInput.json'));
+5. let test = JSON.parse(rawdata)
+6. console.log(test) // To verify if the file is being read correctly or not
 
 ### `npm build`
 
