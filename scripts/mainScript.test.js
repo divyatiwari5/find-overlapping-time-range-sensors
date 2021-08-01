@@ -1,7 +1,7 @@
 const createData = require("./mainScript");
 const baseInput = require("./data/baseInput");
-const generateRandomData = require("./data/hugeData.js")
-const smallData = require("./data/smallData.js")
+const generateRandomData = require("./data/hugeData")
+const smallData = require("./data/smallData")
 
 test("When no Equipment Sensor is available", () => {
     const data = Object.assign({}, baseInput);
