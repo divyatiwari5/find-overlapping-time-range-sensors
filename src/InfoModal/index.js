@@ -4,16 +4,25 @@ function InfoModal(props) {
     const show = props.show
 
     return(
-        <div>
-            <p onClick={props.handleClose}>x</p>
+        <div className="info-modal">
+            <p className="close-modal" onClick={props.handleClose}>x</p>
             {
-                sensorEquipInfo && sensorEquipInfo.map((sensorEquipObj) => {
-                    return <div key={sensorEquipObj.sensor.name + '-'  + sensorEquipObj.startTimeStr + '-' + sensorEquipObj.endTimeStr}>
-                        <p>Sensor: ${sensorEquipObj.sensor.name}</p>
-                        <p>StartTime: ${sensorEquipObj.startTimeStr}</p>
-                        <p>End Time: ${sensorEquipObj.endTimeStr}</p>
-                    </div>
-                })
+                Object.keys(sensorEquipInfo).length !== 0 ? 
+                <div className="content sensor-grid-container">
+                    {  
+                        sensorEquipInfo.map((sensorEquipObj, i) => {
+                            return <div  
+                                key={sensorEquipObj.sensor.name + '-'  + i}
+                                className="grid-item">
+                                <p><b>Sensor:</b> {sensorEquipObj.sensor.name}</p>
+                                <p><b>StartTime:</b> {sensorEquipObj.startTimeStr}</p>
+                                <p><b>End Time:</b> {sensorEquipObj.endTimeStr}</p>
+                            </div>
+                        })
+                    }
+                </div>
+                : 
+                <p style={{margin: 'auto'}}>No sensor found for the selected time period!</p>
             }
         </div>
     )

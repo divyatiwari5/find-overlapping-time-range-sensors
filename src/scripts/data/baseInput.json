@@ -1,4 +1,4 @@
-module.exports =  baseInput = {
+{
     "Plants": [
         "PlantA",
         "PlantB",
@@ -27,13 +27,13 @@ module.exports =  baseInput = {
             },
             {
                 "_id": "Sensor1",
-                "start_time": "10:00",
-                "end_time": "13:00"
+                "start_time": "11:00",
+                "end_time": "12:00"
             },
             {
                 "_id": "Sensor2",
-                "start_time": "10:00",
-                "end_time": "13:00"
+                "start_time": "10:28",
+                "end_time": "10:29"
             }
         ]
     }

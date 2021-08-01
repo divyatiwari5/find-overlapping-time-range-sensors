@@ -20,7 +20,7 @@ function Equipments(props) {
     useEffect(() => {
         const equipments = props.equipments;
         setEquipments(equipments);
-    }, [totalEquipments]); 
+    }); 
 
     function onStartDateChange(value) {
         if (value) setStartDate(value.format(format));
@@ -33,11 +33,11 @@ function Equipments(props) {
     function filterEquipmentSensors(selectedEquipment) {
         console.log({selectedEquipment});
         console.time("V1 Timing");
-        const result = selectedEquipment.getAllSensorInTimeRange(startDate, endDate);
-        console.log({result});
+        // const result = selectedEquipment.getAllSensorInTimeRangev1(startDate, endDate);
+        // console.log({result});
         console.timeEnd("V1 Timing");
         console.time("V2 Timing");
-        const result2 = selectedEquipment.getAllSensorInTimeRangev2(startDate, endDate);
+        const result2 = selectedEquipment.getAllSensorInTimeRange(startDate, endDate);
         console.log({result2});
         console.timeEnd("V2 Timing");
 

@@ -19,26 +19,24 @@ function App() {
   const [sensors, setSensors] = useState();
 
 
-  function readFile(event) {
-    var input = event.target;
+function readFile(event) {
+  let input = event.target;
 
-    var reader = new FileReader();
-    reader.onload = function(){
-      var text = reader.result;
-      var node = document.getElementById('myFile');
-      node.innerText = text;
-      console.log(reader.result);
-      const splittedFileData = reader.result.split("=")
+  let reader = new FileReader();
+  reader.onload = function(){
+    let data = JSON.parse(reader.result);
+    // If `input` is present in data, parse input
+    if (data.input !== undefined) {
+        data = data.input;
+    }
+    let {plants, equipments, sensors} = createData(data);
+    setPlants(plants);
+    setEquipments(equipments);
+    setSensors(sensors);
+  };
+  reader.readAsText(input.files[0]);
+}
 
-      const data = JSON.parse(splittedFileData[2]);
-
-      let {plants, equipments, sensors} = createData(data);
-      setPlants(plants);
-      setEquipments(equipments);
-      setSensors(sensors);
-    };
-    reader.readAsText(input.files[0]);
-  }
 
   return (
     <div className="App">

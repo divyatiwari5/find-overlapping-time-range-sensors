@@ -1,13 +1,18 @@
 /**
  * Converts time to minutes
- * @param {*} timeStr 
- * @returns formatted time in minutes
+ * @param {String} timeStr in HH:MM or H:M format
+ * @returns {Number} formatted time in minutes
  */
 function getTimeInMinutes(timeStr) {
     let splittedTime = timeStr.split(":");
     return ((+splittedTime[0] * 60) + +splittedTime[1]);
-};
+}
 
+/**
+ * Union of sets
+ * @param {Array[Set]} sets array of sets to combine
+ * @returns {Set} Union of all sets
+ */
 function union (sets) {
     return sets.reduce((combined, list) => {
       return new Set([...combined, ...list]);
@@ -122,7 +127,7 @@ class Equipment {
      * @param {String} endTime 
      * @returns all sensors in given time range
      */
-    getAllSensorInTimeRange(startTime, endTime) {
+    getAllSensorInTimeRangev1(startTime, endTime) {
         // Convert start and end time in minutes
         const startTimeInMinutes = getTimeInMinutes(startTime);
         const endTimeInMinutes = getTimeInMinutes(endTime);
@@ -227,7 +232,7 @@ class Equipment {
      * @param {String} endTime 
      * @returns all sensors in given time range
      */
-     getAllSensorInTimeRangev2(startTime, endTime) {
+     getAllSensorInTimeRange(startTime, endTime) {
         // Convert start and end time in minutes
         const startTimeInMinutes = getTimeInMinutes(startTime);
         const endTimeInMinutes = getTimeInMinutes(endTime);
