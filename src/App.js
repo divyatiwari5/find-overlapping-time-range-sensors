@@ -1,23 +1,82 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import './App.scss';
+import Equipments from './Equipments';
+import Plants from './Plants';
+import {createData} from "./scripts/mainScript.js";
+import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
+import Sensors from './Sensors';
+import PlantIcon from "./assets/plant.png";
+import EquipIcon from "./assets/equipment.png";
+import SensorIcon from "./assets/sensor.png";
 
 function App() {
+
+  const [parsedData, setData] = useState();
+  const [plants, setPlants] = useState();
+  const [equipments, setEquipments] = useState();
+  const [sensors, setSensors] = useState();
+
+
+  function readFile(event) {
+    var input = event.target;
+
+    var reader = new FileReader();
+    reader.onload = function(){
+      var text = reader.result;
+      var node = document.getElementById('myFile');
+      node.innerText = text;
+      console.log(reader.result);
+      const splittedFileData = reader.result.split("=")
+
+      const data = JSON.parse(splittedFileData[2]);
+
+      let {plants, equipments, sensors} = createData(data);
+      setPlants(plants);
+      setEquipments(equipments);
+      setSensors(sensors);
+    };
+    reader.readAsText(input.files[0]);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="upload-file">
+        <p>Upload input data:</p>
+        <input 
+          className="upload-button"
+          id="myFile"
+          type="file" name="Upload Input Data" 
+          onChange={(event) => readFile(event)}
+        />
+      </div>
+      <BrowserRouter>
+        <div className="user-options">
+            <Link to="/plants">
+              {/* <img className="btn" src={PlantIcon}/> */}
+              <button className="btn">All Plants</button>
+            </Link>
+            <Link to="/equipments">
+              {/* <img className="btn" src={EquipIcon}/> */}
+              <button className="btn">All Equipments</button>
+            </Link>
+            <Link to="/sensors">
+              {/* <img className="btn" src={SensorIcon}/> */}
+              <button className="btn">All Sensors</button>
+            </Link>
+        </div>
+
+        <Switch>
+          <Route exact path="/plants">
+            <Plants plants={plants}/>
+          </Route>
+          <Route exact path="/sensors">
+            <Sensors sensors={sensors}/>
+          </Route>
+          <Route exact path="/equipments">
+            <Equipments equipments={equipments}/>
+          </Route>          
+        </Switch>
+      </BrowserRouter>
     </div>
   );
 }

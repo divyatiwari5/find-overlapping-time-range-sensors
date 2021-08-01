@@ -1,0 +1,91 @@
+.App {
+  text-align: center;
+  background: #4A6A5F;
+  height: 100vh;
+
+  & > .user-options {
+    display: flex;
+    justify-content: space-evenly;
+    border: 1px solid lightgrey;
+    width: fit-content;
+    margin: auto;
+    
+    & > a {
+      text-decoration: none;
+      color: black;
+      & > img {
+      height: 30px;
+      width: 40px;
+    }
+      & > .btn{
+        padding: 10px;
+        background: white;
+        border: none;
+        &:hover {
+          background-color: lightgrey;
+          cursor: pointer;
+        }
+        
+      }
+    }
+   
+  }
+  & > .upload-file {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(179deg, #121717, #425F55);
+    margin-bottom: 10px;
+    color: white;
+    font-weight: 800;
+    & > .upload-button {
+      margin: 10px;
+      padding: 12px;
+      font-weight: 700;
+      :hover {
+        cursor: pointer;
+      }
+    }
+  }
+  
+}
+
+.heading {
+  color: #F5EFE9;
+  font-size: 18px;
+  font-weight: 700;
+}
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -74,7 +74,7 @@ function generateRandomData(np, ne, ns, nepe, nees, minTime, maxTime, validMinTi
 }
 
 // // 10:28 AM - 04:15 PM
-// genData = generateRandomData(50, 1000, 1000000, 10, 1000, 0, 1439, 628, 975);
+// genData = generateRandomData(1, 1, 1000000, 1, 1000000, 0, 1439, 628, 975);
 
 // fs.writeFile('./largeData.json', JSON.stringify(genData), err => {
 //     if (err) {
