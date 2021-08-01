@@ -3,12 +3,15 @@ import TimePicker from 'rc-time-picker';
 import 'rc-time-picker/assets/index.css';
 import moment from 'moment';
 import "./_Equipments.scss";
+import InfoModal from "../InfoModal";
 
 function Equipments(props) {
 
     const [totalEquipments, setEquipments] = useState({});
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
+    const [showModal, setModalState] = useState(false);
+    const [sensorEquipInfo, setSensorEquipInfo] = useState({});
 
     const format = 'H:mm';
 
@@ -29,8 +32,22 @@ function Equipments(props) {
 
     function filterEquipmentSensors(selectedEquipment) {
         console.log({selectedEquipment});
-        const result = selectedEquipment.getAllSensorInTimeRange(startDate, endDate)
+        console.time("V1 Timing");
+        const result = selectedEquipment.getAllSensorInTimeRange(startDate, endDate);
         console.log({result});
+        console.timeEnd("V1 Timing");
+        console.time("V2 Timing");
+        const result2 = selectedEquipment.getAllSensorInTimeRangev2(startDate, endDate);
+        console.log({result2});
+        console.timeEnd("V2 Timing");
+
+        setSensorEquipInfo(result2);
+        setModalState(true);
+
+    }
+
+    function handleClose() {
+        setModalState(false);
     }
 
     return(
@@ -38,10 +55,11 @@ function Equipments(props) {
             <p className="heading">Total no. of Equipments: {totalEquipments ? Object.keys(totalEquipments).length : 0}</p>
             <div className="equp-grid-container">
                 {totalEquipments && Object.keys(totalEquipments).map((equipment) => {
+                    const equipObj = totalEquipments[equipment];
                     return <div key={equipment} className="grid-item">
-                        {totalEquipments[equipment].name}
-                        <p>Total no. of sensors: {totalEquipments[equipment].sensors.size}</p>
-                        <p>Total no. of sensor equipment mapping: {totalEquipments[equipment].sensorTimeMap.length}</p>
+                        {equipObj.name}
+                        <p>Total no. of sensors: {equipObj.sensors.size}</p>
+                        <p>Total no. of sensor equipment mapping: {equipObj.sensorTimeMap.length}</p>
                         <div className="time-filter">
                             <span className="filter-box">
                                 <p>Start Time</p>
@@ -60,10 +78,17 @@ function Equipments(props) {
                                     />
                             </span>
                         </div>
-                        <button className="filter-btn" onClick={() => filterEquipmentSensors(totalEquipments[equipment])}>Filter Sensors</button>
-                       
+                        <button className="filter-btn" onClick={() => filterEquipmentSensors(equipObj)}>Filter Sensors</button>
                     </div>
                 })}
+                {
+                        showModal && 
+                        <InfoModal
+                            show={showModal}
+                            sensorEquipInfo={sensorEquipInfo}
+                            handleClose={handleClose}
+                        />
+                }
             </div>
         </div>
        

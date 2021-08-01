@@ -123,7 +123,6 @@ class Equipment {
      * @returns all sensors in given time range
      */
     getAllSensorInTimeRange(startTime, endTime) {
-        console.log({startTime}, {endTime}, this);
         // Convert start and end time in minutes
         const startTimeInMinutes = getTimeInMinutes(startTime);
         const endTimeInMinutes = getTimeInMinutes(endTime);
@@ -133,13 +132,13 @@ class Equipment {
         const lowerBoundStartTime = parseInt(startTimeInMinutes/30);
         const lowerBoundEndTime = parseInt(endTimeInMinutes/30);
 
-        let result = {};
+        let result = new Set();
 
         // TODO: Handle if startTime > EndTime; if startTime < 00:00 && endTime > 23:59
         if (this.sensors.size === 0) {
             return result; 
         }
-        if (startTimeInMinutes > this.sensorsMaxStartTime || endTimeInMinutes > this.sensorsMaxEndTime) {
+        if (startTimeInMinutes > this.sensorsMaxStartTime || endTimeInMinutes < this.sensorsMinEndTime) {
             return result;
         }
     
@@ -203,20 +202,91 @@ class Equipment {
         // Set of all filtered objects from startTimeHashMap
         let allStartTimeObjects = union(sTHMFilteredSets);
         let allEndTimeObjects = union(eTHMFilteredSets);
-
-        console.log({allStartTimeObjects}, {allEndTimeObjects});
     
         allStartTimeObjects.forEach(obj => {
             if (allEndTimeObjects.has(obj) ){
-                let obj_result = result[obj.sensor.name];
-                if (obj_result === undefined) {
-                    obj_result = [];
-                    result[obj.sensor.name] = obj_result;
-                }
-                obj_result.push([obj.startTimeStr, obj.endTimeStr])
+                result.add(obj);
+                // let obj_result = result[obj.sensor.name];
+                // if (obj_result === undefined) {
+                //     obj_result = [];
+                //     result[obj.sensor.name] = obj_result;
+                // }
+                // obj_result.push([obj.startTimeStr, obj.endTimeStr])
             }
         });
+
+        // result = new Set([...allStartTimeObjects].filter((a) => allEndTimeObjects.has(a)));
+
         return result
+    
+    }
+
+    /**
+     * Creates array of sets of start and end Equipment Sensors with Potential matches and filter the common between those
+     * @param {String} startTime 
+     * @param {String} endTime 
+     * @returns all sensors in given time range
+     */
+     getAllSensorInTimeRangev2(startTime, endTime) {
+        // Convert start and end time in minutes
+        const startTimeInMinutes = getTimeInMinutes(startTime);
+        const endTimeInMinutes = getTimeInMinutes(endTime);
+
+        // Get group number of start time and end time
+        // Since we are dividing 24 hours into 48 hours; we need to get lower bound start and end time
+        const lowerBoundStartTime = parseInt(startTimeInMinutes/30);
+        const lowerBoundEndTime = parseInt(endTimeInMinutes/30);
+
+        // TODO: Handle if startTime > EndTime; if startTime < 00:00 && endTime > 23:59
+        if (this.sensors.size === 0 && this.sensorTimeMap.size === 0) {
+            return result; 
+        }
+        if (startTimeInMinutes > this.sensorsMaxStartTime || endTimeInMinutes < this.sensorsMinEndTime) {
+            return result;
+        }
+    
+        // Array of sets of ES with potential matches
+        let sTHMFilteredSets = [];
+        let maxLength = 0;
+        // Get elements from respective Map Range
+        for (var i=(lowerBoundStartTime+1); i<lowerBoundEndTime; i++) {
+            let sensorStartTimeMapObj = this.sensorStartTimeMap[i];
+            if (sensorStartTimeMapObj!== undefined) {
+                if (sensorStartTimeMapObj.size > maxLength) maxLength = sensorStartTimeMapObj.size
+                sTHMFilteredSets.push([...sensorStartTimeMapObj]);
+            }
+        }
+    
+        // Process this.sensorStartTimeMap
+        // Set of filtered ES objects in lowerBoundStartTime and lowerBoundEndTime
+        let startTimeFilteredObjects = new Set();
+
+        let lowerBoundStartTimeElems = [...(this.sensorStartTimeMap[lowerBoundStartTime] || [])];
+        let lowerBoundEndTimeElems = [...(this.sensorStartTimeMap[lowerBoundEndTime] || [])];
+
+        let loopLength = Math.max(lowerBoundStartTimeElems.length, lowerBoundEndTimeElems.length, maxLength);
+
+        for (var i=0; i<loopLength; i++ ) {
+            for (var j=0; j<sTHMFilteredSets.length; j++) {
+                let es = sTHMFilteredSets[j][i];
+                if (es === undefined) sTHMFilteredSets.splice(j, 1);
+                else if (es.endTime < endTimeInMinutes) {
+                    startTimeFilteredObjects.add(es);
+                }
+            }
+            let Ses = lowerBoundStartTimeElems[i];
+            let Ees = lowerBoundEndTimeElems[i];
+            if (Ses && Ses.startTime >= startTimeInMinutes && Ses.endTime < endTimeInMinutes) {
+                startTimeFilteredObjects.add(Ses);
+            }
+            if (Ees && Ees.endTime < endTimeInMinutes) {
+                startTimeFilteredObjects.add(Ees);
+            }
+        }
+    
+        // Get elements from lowerBoundEndTime of startTimeMap which is in the range of startTimeInMinutes and endTimeInMinutes
+
+        return startTimeFilteredObjects;
     
     }
 }
