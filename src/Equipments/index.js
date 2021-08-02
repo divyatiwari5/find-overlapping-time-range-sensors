@@ -7,8 +7,8 @@ import InfoModal from "../InfoModal";
 function Equipments(props) {
 
     const [totalEquipments, setEquipments] = useState({});
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
+    const [startDate, setStartDate] = useState("00:00");
+    const [endDate, setEndDate] = useState("00:00");
     const [showModal, setModalState] = useState(false);
     const [sensorEquipInfo, setSensorEquipInfo] = useState({});
 
