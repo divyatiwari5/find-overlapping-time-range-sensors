@@ -19,7 +19,7 @@
     - `utils.js`: Contains util functions: `getTimeInMinutes`, `union`, `compareResult`
     - `models.js`: Contains model classes: `Plant`, `Equipment`, `Sensor`, EquipmentSensor`
     - `importer.js`: Contains function to import JSON data: `createData`
-    - `dataGenerator.js`: Contains a script to generate test data. [Check doc here](https://github.com/divyatiwari5/find-overlapping-time-range-sensors/blob/master/README.md#denerate-data)
+    - `dataGenerator.js`: Contains a script to generate test data. [Check doc here](https://github.com/divyatiwari5/find-overlapping-time-range-sensors/blob/master/README.md#generate-data)
     - `data`: Contains sample `JSON` data
     - `runScript.js`: Run with `node` after editing params from CLI
   - `Equipments`: React component
