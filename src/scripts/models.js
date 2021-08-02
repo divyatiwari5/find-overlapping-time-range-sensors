@@ -1,23 +1,4 @@
-/**
- * Converts time to minutes
- * @param {String} timeStr in HH:MM or H:M format
- * @returns {Number} formatted time in minutes
- */
-function getTimeInMinutes(timeStr) {
-    let splittedTime = timeStr.split(":");
-    return ((+splittedTime[0] * 60) + +splittedTime[1]);
-}
-
-/**
- * Union of sets
- * @param {Array[Set]} sets array of sets to combine
- * @returns {Set} Union of all sets
- */
-function union (sets) {
-    return sets.reduce((combined, list) => {
-      return new Set([...combined, ...list]);
-    }, new Set());
-}
+const {getTimeInMinutes, union} = require("./utils");
 
 // Stores plants and it's associated equipments - PlantMapping
 class Plant {
@@ -69,10 +50,10 @@ class Equipment {
     }
 
     /**
-     * Add sensor to sensors; Create EquipmentSensor mapping and 
-     * calculates sensor's min and max start and end time 
+     * Add sensor to sensors; Create EquipmentSensor mapping and
+     * calculates sensor's min and max start and end time
      * @param {Sensor} sensor Equipment Sensor
-     * @param {String} startTimeStr Sensor's Start Time 
+     * @param {String} startTimeStr Sensor's Start Time
      * @param {String} endTimeStr Sensor's End Time
      */
     addSensor(sensor, startTimeStr, endTimeStr) {
@@ -123,8 +104,8 @@ class Equipment {
 
     /**
      * Creates array of sets of start and end Equipment Sensors with Potential matches and filter the common between those
-     * @param {String} startTime 
-     * @param {String} endTime 
+     * @param {String} startTime
+     * @param {String} endTime
      * @returns all sensors in given time range
      */
     getAllSensorInTimeRangev1(startTime, endTime) {
@@ -141,18 +122,18 @@ class Equipment {
 
         // TODO: Handle if startTime > EndTime; if startTime < 00:00 && endTime > 23:59
         if (this.sensors.size === 0) {
-            return result; 
+            return result;
         }
         if (startTimeInMinutes > this.sensorsMaxStartTime || endTimeInMinutes < this.sensorsMinEndTime) {
             return result;
         }
-    
+
         // Array of sets of ES with potential matches
         let sTHMFilteredSets = [];
         let eTHMFilteredSets = [];
-    
+
         // Get elements from respective Map Range
-        for (var i=(lowerBoundStartTime+1); i<lowerBoundEndTime; i++) {
+        for (let i=(lowerBoundStartTime+1); i<lowerBoundEndTime; i++) {
             if (this.sensorStartTimeMap[i] !== undefined) {
                 sTHMFilteredSets.push(this.sensorStartTimeMap[i]);
             }
@@ -160,7 +141,7 @@ class Equipment {
                 eTHMFilteredSets.push(this.sensorEndTimeMap[i]);
             }
         }
-    
+
         // Process this.sensorStartTimeMap
         // Set of filtered ES objects in lowerBoundStartTime and lowerBoundEndTime
         let startTimeFilteredObjects = new Set();
@@ -174,7 +155,7 @@ class Equipment {
                 startTimeFilteredObjects.add(es);
             }
         });
-    
+
         // Get elements from lowerBoundEndTime of startTimeMap which is in the range of startTimeInMinutes and endTimeInMinutes
         lowerBoundEndTimeElems.forEach((es) => {
             if (es.startTime < endTimeInMinutes  && es.endTime < endTimeInMinutes) {
@@ -182,7 +163,7 @@ class Equipment {
             }
         });
         sTHMFilteredSets.push(startTimeFilteredObjects);
-    
+
         // Process this.sensorEndTimeMap
         let endTimeFilteredObjects = new Set();
 
@@ -195,7 +176,7 @@ class Equipment {
                 endTimeFilteredObjects.add(es);
             }
         });
-    
+
         // Get elements from end lower bound time of endTimeHashMap
         lowerBoundSensorEndEndTimeElems.forEach((es) => {
             if (es.endTime < endTimeInMinutes && es.startTime >= startTimeInMinutes) {
@@ -203,11 +184,10 @@ class Equipment {
             }
         })
         eTHMFilteredSets.push(endTimeFilteredObjects);
-        console.log(endTimeFilteredObjects);
         // Set of all filtered objects from startTimeHashMap
         let allStartTimeObjects = union(sTHMFilteredSets);
         let allEndTimeObjects = union(eTHMFilteredSets);
-    
+
         allStartTimeObjects.forEach(obj => {
             if (allEndTimeObjects.has(obj) ){
                 result.add(obj);
@@ -223,16 +203,16 @@ class Equipment {
         // result = new Set([...allStartTimeObjects].filter((a) => allEndTimeObjects.has(a)));
 
         return result
-    
+
     }
 
     /**
      * Creates array of sets of start and end Equipment Sensors with Potential matches and filter the common between those
-     * @param {String} startTime 
-     * @param {String} endTime 
+     * @param {String} startTime
+     * @param {String} endTime
      * @returns all sensors in given time range
      */
-     getAllSensorInTimeRange(startTime, endTime) {
+    getAllSensorInTimeRange(startTime, endTime) {
         // Convert start and end time in minutes
         const startTimeInMinutes = getTimeInMinutes(startTime);
         const endTimeInMinutes = getTimeInMinutes(endTime);
@@ -247,24 +227,24 @@ class Equipment {
 
         // TODO: Handle if startTime > EndTime; if startTime < 00:00 && endTime > 23:59
         if (this.sensors.size === 0 && this.sensorTimeMap.size === 0) {
-            return startTimeFilteredObjects; 
+            return startTimeFilteredObjects;
         }
         if (startTimeInMinutes > this.sensorsMaxStartTime || endTimeInMinutes < this.sensorsMinEndTime) {
             return startTimeFilteredObjects;
         }
-    
+
         // Array of sets of ES with potential matches
         let sTHMFilteredSets = [];
         let maxLength = 0;
         // Get elements from respective Map Range
-        for (var i=(lowerBoundStartTime+1); i<lowerBoundEndTime; i++) {
+        for (let i=(lowerBoundStartTime+1); i<lowerBoundEndTime; i++) {
             let sensorStartTimeMapObj = this.sensorStartTimeMap[i];
             if (sensorStartTimeMapObj!== undefined) {
                 if (sensorStartTimeMapObj.size > maxLength) maxLength = sensorStartTimeMapObj.size
                 sTHMFilteredSets.push([...sensorStartTimeMapObj]);
             }
         }
-    
+
         // Process this.sensorStartTimeMap
         // Set of filtered ES objects in lowerBoundStartTime and lowerBoundEndTime
 
@@ -273,8 +253,8 @@ class Equipment {
 
         let loopLength = Math.max(lowerBoundStartTimeElems.length, lowerBoundEndTimeElems.length, maxLength);
 
-        for (var i=0; i<loopLength; i++ ) {
-            for (var j=0; j<sTHMFilteredSets.length; j++) {
+        for (let i=0; i<loopLength; i++ ) {
+            for (let j=0; j<sTHMFilteredSets.length; j++) {
                 let es = sTHMFilteredSets[j][i];
                 if (es === undefined) sTHMFilteredSets.splice(j, 1);
                 else if (es.endTime < endTimeInMinutes) {
@@ -290,11 +270,11 @@ class Equipment {
                 startTimeFilteredObjects.add(Ees);
             }
         }
-    
+
         // Get elements from lowerBoundEndTime of startTimeMap which is in the range of startTimeInMinutes and endTimeInMinutes
 
         return startTimeFilteredObjects;
-    
+
     }
 }
 
@@ -305,39 +285,9 @@ class Sensor {
     }
 }
 
-/**
- * Creates object for plants, sensors and equipments. 
- * For each equipment, map sensor
- * @param {*} data 
- * @returns plants, equipments and sensors
- */
-function createData(data) {
-
-    let plants = {};
-    let equipments = {};
-    let sensors = {};
-
-    data.Plants.forEach(plant => {
-        plants[plant] = new Plant(plant);
-    });
-
-    data.Sensors.forEach(sensor => {
-        sensors[sensor] = new Sensor(sensor);
-    });
-
-    data.Equipments.forEach(equp => {
-        let equpObj = new Equipment(equp);
-        let equipmentMappings = data.EquipmentMapping[equp] || [];
-        equipmentMappings.forEach(equpSensorMap => {
-            let sensorObj = sensors[equpSensorMap._id];
-            equpObj.addSensor(sensorObj, equpSensorMap.start_time, equpSensorMap.end_time);
-        })
-        equipments[equp] = equpObj;
-    });
-
-    // Loop on data.PlantMapping and do plants[plantMapKey].addEquipment(equipments[eachEqup]);
-
-    return {plants, equipments, sensors};
+module.exports = {
+    Plant,
+    EquipmentSensors,
+    Equipment,
+    Sensor,
 }
-
-module.exports = createData

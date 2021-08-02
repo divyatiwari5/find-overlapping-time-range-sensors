@@ -1,6 +1,20 @@
 const faker = require("faker");
-const fs = require('fs')
 
+
+/**
+ * Generate random Data
+ *
+ * @param np Number of Plants
+ * @param ne Number of Equipments
+ * @param ns Number of Sensors
+ * @param nepe Number of Equipment per Plant
+ * @param nees Number of Sensor per Equipment
+ * @param minTime Min Start Time of Senors
+ * @param maxTime Max End Time of Sensors
+ * @param validMinTime Valid Min Start Time of Sensors for Output
+ * @param validMaxTime Valid Max End Time of Sensors for Ouput
+ * @returns {{output: (*|{}), input: (*|{Equipments: *[], Plants: *[], Sensors: *[], EquipmentMapping: {}, PlantsMapping: {}})}}
+ */
 function generateRandomData(np, ne, ns, nepe, nees, minTime, maxTime, validMinTime, validMaxTime) {
     results = {};
     data = {

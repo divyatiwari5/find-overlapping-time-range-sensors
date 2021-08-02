@@ -9,7 +9,7 @@ import PlantIcon from "./assets/plant.png";
 import EquipIcon from "./assets/equipment.png";
 import SensorIcon from "./assets/sensor.png";
 
-const createData =  require("./scripts/mainScript.js")
+const {createData} =  require("./scripts/importer.js")
 
 function App() {
 
