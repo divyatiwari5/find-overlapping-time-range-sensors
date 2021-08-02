@@ -3,11 +3,8 @@ import './App.scss';
 import Equipments from './Equipments';
 import Plants from './Plants';
 // import {createData} from "./scripts/mainScript.js";
-import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Link, Redirect } from "react-router-dom";
 import Sensors from './Sensors';
-import PlantIcon from "./assets/plant.png";
-import EquipIcon from "./assets/equipment.png";
-import SensorIcon from "./assets/sensor.png";
 
 const {createData} =  require("./scripts/importer.js")
 
@@ -53,15 +50,12 @@ function readFile(event) {
       <BrowserRouter>
         <div className="user-options">
             <Link to="/plants">
-              {/* <img className="btn" src={PlantIcon}/> */}
               <button className="btn">All Plants</button>
             </Link>
             <Link to="/equipments">
-              {/* <img className="btn" src={EquipIcon}/> */}
               <button className="btn">All Equipments</button>
             </Link>
             <Link to="/sensors">
-              {/* <img className="btn" src={SensorIcon}/> */}
               <button className="btn">All Sensors</button>
             </Link>
         </div>
@@ -75,7 +69,10 @@ function readFile(event) {
           </Route>
           <Route exact path="/equipments">
             <Equipments equipments={equipments}/>
-          </Route>          
+          </Route>  
+          <Route exact path="/">
+            <Redirect to="/plants"/>
+          </Route>        
         </Switch>
       </BrowserRouter>
     </div>
