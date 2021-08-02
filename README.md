@@ -30,9 +30,8 @@
 ### Assumptions
 - Sensors can be mapped to any equipment multiple times in multiple time ranges.
 
-## Sample Data and Generating Data for test case
-
-### Format
+### Formats
+#### Input Data
 ```json
 {
   "Plants": [
@@ -60,6 +59,16 @@
   }
 }
 ```
+
+#### Output of runScript.js
+Say, `EquipmentX` contains `SensorFoo` with 2 time ranges in filter and `SensorFoo2` with 1 time range in filter.
+```json
+{
+  "SensorFoo": [["start_time", "end_time"], ["start_time2", "end_time2"]],
+  "SensorFoo2": [["start_time3", "end_time3"]]
+}
+```
+## Sample Data and Generating Data for test case
 
 ### Existing Sample Data:
 
